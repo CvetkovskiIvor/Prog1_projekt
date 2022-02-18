@@ -8,7 +8,7 @@ char valueOperator(char c){
 }
 
 void defineOperators(FILE *fp){
-  char c;
+  char c, c1;
   int inDefine = -1;
   int inString = -1;
 
@@ -28,60 +28,137 @@ void defineOperators(FILE *fp){
         switch (c){
           // op zbrajanja
           case '+':
-            printf("(op_zbr)");
+            c1 = fgetc(fp);
+            if(c1 == '+'){
+              printf("%c(op_inkr)", c1);
+            }else{
+              printf("(op_zbr)");
+              printf("%c", c1);
+            }
             break;
 
           // op oduzimanja
           case '-':
-            printf("(op_oduz)");
+            c1 = fgetc(fp);
+            if(c1 == '-'){
+              printf("%c(op_dekr)", c1);
+            }else{
+              printf("(op_oduz)");
+              printf("%c", c1);
+            }
             break;
 
           // op mnozenja
           case '*':
-            printf("(op_mnoz)");
+            c1 = fgetc(fp);
+            if(c1 == '='){
+              printf("%c(op_mnoz)", c1);
+            }else{
+              printf("(op_mnoz)");
+              printf("%c", c1);
+            }
             break;
 
           // op dijeljenja
           case '/':
-            printf("(op_dij)");
+            c1 = fgetc(fp);
+            if(c1 == '='){
+              printf("%c(op_dijelj)", c1);
+            }else{
+              printf("(op_dijelj)");
+              printf("%c", c1);
+            }
             break;
 
           // op modulo
           case '%':
-            printf("(op_mod)");
+            c1 = fgetc(fp);
+            if(c1 == '='){
+              printf("%c(op_mod)", c1);
+            }else{
+              printf("(op_mod)");
+              printf("%c", c1);
+            }
             break;
 
           // logicko NE
           case '~':
-            printf("(op_NOT)");
+            c1 = fgetc(fp);
+            if(c1 == '='){
+              printf("%c(op_NOT)", c1);
+            }else{
+              printf("(op_NOT)");
+              printf("%c", c1);
+            }
             break;
 
           // logicko I
           case '&':
-            printf("(op_AND)");
+            c1 = fgetc(fp);
+            if(c1 == '&'){
+              printf("%c(op_uAND)", c1);
+            }else{
+              printf("(op_AND)");
+              printf("%c", c1);
+            }
             break;
 
           // logicko ILI
           case '|':
-            printf("(op_OR)");
+            c1 = fgetc(fp);
+            if(c1 == '|'){
+              printf("%c(op_uOR)", c1);
+            }else{
+              printf("(op_OR)");
+              printf("%c", c1);
+            }
             break;
 
           // logicko ekskluzivno ILI
           case '^':
+          
             printf("(op_XOR)");
             break;
 
           // op manje
           case '<':
-            printf("(op_manje)");
+            c1 = fgetc(fp);
+            if(c1 == '<'){
+              printf("%c(op_lPosmak)", c1);
+            }else{
+              if(c1 == '='){
+                printf("%c(op_manje-jed)", c1);
+              }else {
+                printf("(op_manje)");
+                printf("%c", c1);
+              }
+            }
             break;
 
           // op vece
           case '>':
-            printf("(op_vece)");
+            c1 = fgetc(fp);
+            if(c1 == '>'){
+              printf("%c(op_dPosmak)", c1);
+            }else{
+              if(c1 == '='){
+                printf("%c(op_vece-jed)", c1);
+              }else {
+                printf("(op_vece)");
+                printf("%c", c1);
+              }
+            }
             break;
           
-          
+          case '=':
+            c1 = fgetc(fp);
+            if(c1 == '='){
+              printf("%c(op_uJedn)", c1);
+            }else{
+              printf("(op_jedn)");
+              printf("%c", c1);
+            }
+            break;
         }
       }
     }
