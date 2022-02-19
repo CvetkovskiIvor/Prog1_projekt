@@ -7,12 +7,19 @@ char valueOperator(char c){
   return 'n';
 }
 
-void defineOperators(FILE *fp){
+void defineOperators(FILE *fp, FILE *lfp){
+  int i = 0;
+  int j = 0;
   char c, c1;
   int inDefine = -1;
   int inString = -1;
 
   while((c = fgetc(fp)) != EOF){
+    if(c == '\n'){
+      i++;
+      j = 0;
+    }
+    j++;
     printf("%c", c);
 
     // check if in define
@@ -35,6 +42,9 @@ void defineOperators(FILE *fp){
               printf("(op_zbr)");
               printf("%c", c1);
             }
+            if(c1 == '\n'){
+              i++;
+            }
             break;
 
           // op oduzimanja
@@ -45,6 +55,9 @@ void defineOperators(FILE *fp){
             }else{
               printf("(op_oduz)");
               printf("%c", c1);
+            }
+            if(c1 == '\n'){
+              i++;
             }
             break;
 
@@ -57,6 +70,9 @@ void defineOperators(FILE *fp){
               printf("(op_mnoz)");
               printf("%c", c1);
             }
+            if(c1 == '\n'){
+              i++;
+            }
             break;
 
           // op dijeljenja
@@ -67,6 +83,9 @@ void defineOperators(FILE *fp){
             }else{
               printf("(op_dijelj)");
               printf("%c", c1);
+            }
+            if(c1 == '\n'){
+              i++;
             }
             break;
 
@@ -79,6 +98,9 @@ void defineOperators(FILE *fp){
               printf("(op_mod)");
               printf("%c", c1);
             }
+            if(c1 == '\n'){
+              i++;
+            }
             break;
 
           // logicko NE
@@ -89,6 +111,9 @@ void defineOperators(FILE *fp){
             }else{
               printf("(op_NOT)");
               printf("%c", c1);
+            }
+            if(c1 == '\n'){
+              i++;
             }
             break;
 
@@ -101,6 +126,9 @@ void defineOperators(FILE *fp){
               printf("(op_AND)");
               printf("%c", c1);
             }
+            if(c1 == '\n'){
+              i++;
+            }
             break;
 
           // logicko ILI
@@ -111,6 +139,9 @@ void defineOperators(FILE *fp){
             }else{
               printf("(op_OR)");
               printf("%c", c1);
+            }
+            if(c1 == '\n'){
+              i++;
             }
             break;
 
@@ -133,6 +164,9 @@ void defineOperators(FILE *fp){
                 printf("%c", c1);
               }
             }
+            if(c1 == '\n'){
+              i++;
+            }
             break;
 
           // op vece
@@ -148,6 +182,9 @@ void defineOperators(FILE *fp){
                 printf("%c", c1);
               }
             }
+            if(c1 == '\n'){
+              i++;
+            }
             break;
           
           case '=':
@@ -158,16 +195,21 @@ void defineOperators(FILE *fp){
               printf("(op_jedn)");
               printf("%c", c1);
             }
+            if(c1 == '\n'){
+              i++;
+            }
             break;
         }
       }
     }
   }
+  printf("Broj redova: %d", i);
 }
 
 int main(){
   int num = 9;
   FILE *filepointer;
+  FILE *locationfilepointer;
 
   filepointer = fopen("in.txt", "r");
 
@@ -175,7 +217,7 @@ int main(){
     printf("Error!");
   }
 
-  defineOperators(filepointer);
+  defineOperators(filepointer, locationfilepointer);
   //locateOperators(filepointer);
 
   fclose(filepointer);
