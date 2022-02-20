@@ -8,18 +8,22 @@ char valueOperator(char c){
 }
 
 void defineOperators(FILE *fp, FILE *lfp){
-  int i = 0;
+  int i = 1;
   int j = 0;
   char c, c1;
   int inDefine = -1;
   int inString = -1;
 
   while((c = fgetc(fp)) != EOF){
+    
+    
     if(c == '\n'){
       i++;
       j = 0;
+    }else{
+      j++;
     }
-    j++;
+    
     printf("%c", c);
 
     // check if in define
@@ -38,172 +42,219 @@ void defineOperators(FILE *fp, FILE *lfp){
             c1 = fgetc(fp);
             if(c1 == '+'){
               printf("%c(op_inkr)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
             }else{
               printf("(op_zbr)");
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
               printf("%c", c1);
             }
+            j++;
             if(c1 == '\n'){
               i++;
+              j = 0;
             }
-            break;
+          break;
 
           // op oduzimanja
           case '-':
             c1 = fgetc(fp);
             if(c1 == '-'){
               printf("%c(op_dekr)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
             }else{
               printf("(op_oduz)");
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
               printf("%c", c1);
             }
+            j++;
             if(c1 == '\n'){
               i++;
+              j = 0;
             }
-            break;
+          break;
 
           // op mnozenja
           case '*':
             c1 = fgetc(fp);
             if(c1 == '='){
               printf("%c(op_mnoz)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               printf("(op_mnoz)");
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
               printf("%c", c1);
             }
+            j++;
             if(c1 == '\n'){
               i++;
+              j = 0;
             }
-            break;
+          break;
 
           // op dijeljenja
           case '/':
             c1 = fgetc(fp);
             if(c1 == '='){
               printf("%c(op_dijelj)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               printf("(op_dijelj)");
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
               printf("%c", c1);
             }
+            j++;
             if(c1 == '\n'){
               i++;
+              j = 0;
             }
-            break;
+          break;
 
           // op modulo
           case '%':
             c1 = fgetc(fp);
             if(c1 == '='){
               printf("%c(op_mod)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               printf("(op_mod)");
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
               printf("%c", c1);
             }
+            j++;
             if(c1 == '\n'){
               i++;
+              j = 0;
             }
-            break;
+          break;
 
           // logicko NE
           case '~':
             c1 = fgetc(fp);
             if(c1 == '='){
               printf("%c(op_NOT)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               printf("(op_NOT)");
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
               printf("%c", c1);
             }
+            j++;
             if(c1 == '\n'){
               i++;
+              j = 0;
             }
-            break;
+          break;
 
           // logicko I
           case '&':
             c1 = fgetc(fp);
             if(c1 == '&'){
               printf("%c(op_uAND)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               printf("(op_AND)");
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
               printf("%c", c1);
             }
+            j++;
             if(c1 == '\n'){
               i++;
+              j = 0;
             }
-            break;
+          break;
 
           // logicko ILI
           case '|':
             c1 = fgetc(fp);
             if(c1 == '|'){
               printf("%c(op_uOR)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               printf("(op_OR)");
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
               printf("%c", c1);
             }
+            j++;
             if(c1 == '\n'){
               i++;
+              j = 0;
             }
-            break;
+          break;
 
           // logicko ekskluzivno ILI
           case '^':
           
             printf("(op_XOR)");
-            break;
+            fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
+          break;
 
           // op manje
           case '<':
             c1 = fgetc(fp);
             if(c1 == '<'){
               printf("%c(op_lPosmak)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               if(c1 == '='){
                 printf("%c(op_manje-jed)", c1);
+                fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
               }else {
                 printf("(op_manje)");
+                fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
                 printf("%c", c1);
               }
             }
+            j++;
             if(c1 == '\n'){
               i++;
+              j = 0;
             }
-            break;
+          break;
 
           // op vece
           case '>':
             c1 = fgetc(fp);
             if(c1 == '>'){
               printf("%c(op_dPosmak)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               if(c1 == '='){
                 printf("%c(op_vece-jed)", c1);
+                fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
               }else {
                 printf("(op_vece)");
+                fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
                 printf("%c", c1);
               }
             }
+            j++;
             if(c1 == '\n'){
               i++;
+              j = 0;
             }
-            break;
+          break;
           
           case '=':
             c1 = fgetc(fp);
             if(c1 == '='){
               printf("%c(op_uJedn)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               printf("(op_jedn)");
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
               printf("%c", c1);
             }
+            j++;
             if(c1 == '\n'){
               i++;
+              j = 0;
             }
-            break;
+          break;
         }
       }
     }
   }
-  printf("Broj redova: %d", i);
+  //printf("Broj redova: %d", i);
 }
 
 int main(){
@@ -212,6 +263,7 @@ int main(){
   FILE *locationfilepointer;
 
   filepointer = fopen("in.txt", "r");
+  locationfilepointer = fopen("op_pos.txt", "w");
 
   if(filepointer == NULL){
     printf("Error!");
