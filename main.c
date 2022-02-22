@@ -9,6 +9,8 @@ void defineOperators(FILE *fp, FILE *lfp){
   int inDefine = -1;
   int inString = -1;
   int inChar = -1;
+  int inComment1 = -1;
+  int inComment2 = -1;
 
   // take characters while not end of file
   while((c = fgetc(fp)) != EOF){
@@ -30,6 +32,20 @@ void defineOperators(FILE *fp, FILE *lfp){
       inDefine = -1;
     }
 
+    // check if end of one line comment
+    if(inComment1 && c == '\n'){
+      inComment1 = -1;
+    }
+
+    if(inComment2 && c == '*'){
+      c1 = fgetc(fp);
+      if(c1 == '/'){
+        inComment2 = -1;
+        printf("%c", c1);
+        continue;
+      }
+    }
+
     // check if in ""
     if(c == '"'){
       inString *= -1;
@@ -40,7 +56,8 @@ void defineOperators(FILE *fp, FILE *lfp){
       inChar *= -1;
     }
 
-    if(inString == -1 && inDefine == -1 && inChar == -1){
+    //printf("%d %d %d %d %d\n", inString, inDefine, inChar, inComment1, inComment2);
+    if(inString == -1 && inDefine == -1 && inChar == -1 && inComment1 == -1 && inComment2 == -1){
 
       // if all of these are true we know its not an operator
       if(!isalpha(c) && !isdigit(c) && !isspace(c)){
@@ -105,6 +122,12 @@ void defineOperators(FILE *fp, FILE *lfp){
             if(c1 == '='){
               printf("%c(op_dijelj)", c1);
               fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
+            }else if(c1 == '/'){
+              inComment1 = 1;
+              printf("%c", c1);
+            }else if(c1 == '*'){
+              inComment2 = 1;
+              printf("%c", c1);
             }else{
               printf("(op_dijelj)");
               fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
