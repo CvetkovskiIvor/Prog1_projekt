@@ -13,6 +13,7 @@ void defineOperators(FILE *fp, FILE *lfp){
   char c, c1;
   int inDefine = -1;
   int inString = -1;
+  int inChar = -1;
 
   while((c = fgetc(fp)) != EOF){
     
@@ -26,14 +27,24 @@ void defineOperators(FILE *fp, FILE *lfp){
     
     printf("%c", c);
 
-    // check if in define
+    // check if in define/include
+    if(c == '#'){
+      inDefine = 1;
+    }else if(inDefine && c == '\n'){
+      inDefine = -1;
+    }
 
-    // check if in string
+    // check if in ""
     if(c == '"'){
       inString *= -1;
     }
 
-    if(inString == -1){
+    // check if in ''
+    if(c == '\''){
+      inChar *= -1;
+    }
+
+    if(inString == -1 && inDefine == -1 && inChar == -1){
       if(!isalpha(c) && !isdigit(c) && !isspace(c)){
         
         switch (c){
