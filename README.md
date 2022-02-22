@@ -1,5 +1,3 @@
 # Prog1_projekt
 
-Program pretrazuje ulaznu C datoteku te ispisuje na standardni izlaz sve operatore koje je našao.
-
-Problemi za sad prisutni: ne radi razliku ako je u npr #define sekciji, također scanf isto radi probleme.
+Zadatak programa je da pronađe sve operatore koji se nalaze u ulaznoj datoteci (C programu) te da ispiše na standardni izlaz njihov naziv, a u posebnu datoteku napiše njihovu poziciju unutar ulazne datoteke.
