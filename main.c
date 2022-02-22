@@ -37,6 +37,7 @@ void defineOperators(FILE *fp, FILE *lfp){
       inComment1 = -1;
     }
 
+    // check if end of multiple line comment 
     if(inComment2 && c == '*'){
       c1 = fgetc(fp);
       if(c1 == '/'){
