@@ -2,11 +2,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-char valueOperator(char c){
-
-  return 'n';
-}
-
 void defineOperators(FILE *fp, FILE *lfp){
   int i = 1;
   int j = 0;
@@ -15,9 +10,10 @@ void defineOperators(FILE *fp, FILE *lfp){
   int inString = -1;
   int inChar = -1;
 
+  // take characters while not end of file
   while((c = fgetc(fp)) != EOF){
     
-    
+    // counter correction if at end of line
     if(c == '\n'){
       i++;
       j = 0;
@@ -45,8 +41,9 @@ void defineOperators(FILE *fp, FILE *lfp){
     }
 
     if(inString == -1 && inDefine == -1 && inChar == -1){
+
+      // if all of these are true we know its not an operator
       if(!isalpha(c) && !isdigit(c) && !isspace(c)){
-        
         switch (c){
           // op zbrajanja
           case '+':
@@ -245,6 +242,7 @@ void defineOperators(FILE *fp, FILE *lfp){
             }
           break;
           
+          // op jednako
           case '=':
             c1 = fgetc(fp);
             if(c1 == '='){
@@ -265,7 +263,6 @@ void defineOperators(FILE *fp, FILE *lfp){
       }
     }
   }
-  //printf("Broj redova: %d", i);
 }
 
 int main(){
@@ -281,7 +278,6 @@ int main(){
   }
 
   defineOperators(filepointer, locationfilepointer);
-  //locateOperators(filepointer);
 
   fclose(filepointer);
 
