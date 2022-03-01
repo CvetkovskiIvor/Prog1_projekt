@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 void defineOperators(FILE *fp, FILE *lfp){
   int i = 1;
@@ -68,7 +69,10 @@ void defineOperators(FILE *fp, FILE *lfp){
             c1 = fgetc(fp);
             if(c1 == '+'){
               printf("%c(op_inkr)", c1);
-              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
+            }else if(c1 == '='){
+              printf("%c(op_zbr)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               printf("(op_zbr)");
               fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
@@ -86,7 +90,10 @@ void defineOperators(FILE *fp, FILE *lfp){
             c1 = fgetc(fp);
             if(c1 == '-'){
               printf("%c(op_dekr)", c1);
-              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
+            }else if(c1 == '='){
+              printf("%c(op_oduz)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               printf("(op_oduz)");
               fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
@@ -107,6 +114,24 @@ void defineOperators(FILE *fp, FILE *lfp){
               fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
               printf("(op_mnoz)");
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
+              printf("%c", c1);
+            }
+            j++;
+            if(c1 == '\n'){
+              i++;
+              j = 0;
+            }
+          break;
+
+          // logicko ne
+          case '!':
+            c1 = fgetc(fp);
+            if(c1 == '='){
+              printf("%c(op_uNOT)", c1);
+              fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
+            }else{
+              printf("(op_NOT)");
               fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
               printf("%c", c1);
             }
@@ -159,14 +184,14 @@ void defineOperators(FILE *fp, FILE *lfp){
             }
           break;
 
-          // logicko NE
+          // binarni komplement
           case '~':
             c1 = fgetc(fp);
             if(c1 == '='){
-              printf("%c(op_NOT)", c1);
+              printf("%c(op_compl)", c1);
               fprintf(lfp, "OP location: i = %d j = %d\n", i, j + 1);
             }else{
-              printf("(op_NOT)");
+              printf("(op_compl)");
               fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
               printf("%c", c1);
             }
@@ -215,8 +240,13 @@ void defineOperators(FILE *fp, FILE *lfp){
 
           // logicko ekskluzivno ILI
           case '^':
-          
             printf("(op_XOR)");
+            fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
+          break;
+
+          // zarez
+          case ',':
+            printf("(op_zarez)");
             fprintf(lfp, "OP location: i = %d j = %d\n", i, j);
           break;
 
@@ -290,11 +320,16 @@ void defineOperators(FILE *fp, FILE *lfp){
 }
 
 int main(){
-  int num = 9;
   FILE *filepointer;
   FILE *locationfilepointer;
+  int num = 9;
+  char *ime = "in";
+  char *nastavak = ".txt";
+  char filename[strlen(ime) + strlen(nastavak) + 1];
 
-  filepointer = fopen("in.txt", "r");
+  snprintf(filename, sizeof(filename), "%s%s", ime, nastavak);
+
+  filepointer = fopen(filename, "r");
   locationfilepointer = fopen("op_pos.txt", "w");
 
   if(filepointer == NULL){
